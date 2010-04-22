@@ -1,0 +1,59 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Particle.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">fi</span>.<span class="ActionScriptDefault_Text">punsa</span>.<span class="ActionScriptDefault_Text">particles</span> <span class="ActionScriptBracket/Brace">{</span>
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span>.<span class="ActionScriptDefault_Text">core</span>.<span class="ActionScriptDefault_Text">UIComponent</span>;
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">Particle</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptBracket/Brace">{</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">xVelocity</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">yVelocity</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">zVelocity</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">gravity</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">friction</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">growX</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">growY</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">fade</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">autoRotate</span><span class="ActionScriptOperator">:</span><span class="ActionScriptDefault_Text">Boolean</span>;
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">Particle</span><span class="ActionScriptBracket/Brace">()</span> <span class="ActionScriptBracket/Brace">{</span>
+            
+            <span class="ActionScriptDefault_Text">xVelocity</span> <span class="ActionScriptOperator">=</span> 0;
+            <span class="ActionScriptDefault_Text">yVelocity</span> <span class="ActionScriptOperator">=</span> 0;
+            <span class="ActionScriptDefault_Text">zVelocity</span> <span class="ActionScriptOperator">=</span> 0;
+            <span class="ActionScriptDefault_Text">gravity</span> <span class="ActionScriptOperator">=</span> 0;
+            <span class="ActionScriptDefault_Text">friction</span> <span class="ActionScriptOperator">=</span> 1;
+            <span class="ActionScriptDefault_Text">growX</span> <span class="ActionScriptOperator">=</span> 1;
+            <span class="ActionScriptDefault_Text">growY</span> <span class="ActionScriptOperator">=</span> 1;
+            <span class="ActionScriptDefault_Text">fade</span> <span class="ActionScriptOperator">=</span> 1;
+            <span class="ActionScriptDefault_Text">autoRotate</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">update</span><span class="ActionScriptBracket/Brace">()</span><span class="ActionScriptOperator">:</span><span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+        
+            <span class="ActionScriptDefault_Text">xVelocity</span> <span class="ActionScriptOperator">*=</span> <span class="ActionScriptDefault_Text">friction</span>;
+            <span class="ActionScriptDefault_Text">yVelocity</span> <span class="ActionScriptOperator">*=</span> <span class="ActionScriptDefault_Text">friction</span>;
+            <span class="ActionScriptDefault_Text">zVelocity</span> <span class="ActionScriptOperator">*=</span> <span class="ActionScriptDefault_Text">friction</span>;
+            <span class="ActionScriptDefault_Text">yVelocity</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">gravity</span>;
+            <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">xVelocity</span>;
+            <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">yVelocity</span>;
+            <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">z</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">zVelocity</span>;
+            <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">scaleX</span> <span class="ActionScriptOperator">*=</span> <span class="ActionScriptDefault_Text">growX</span>;
+            <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">scaleY</span> <span class="ActionScriptOperator">*=</span> <span class="ActionScriptDefault_Text">growY</span>;
+            <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">alpha</span> <span class="ActionScriptOperator">*=</span> <span class="ActionScriptDefault_Text">fade</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">autoRotate</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>            
+                <span class="ActionScriptReserved">this</span>.<span class="ActionScriptDefault_Text">rotation</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math</span>.<span class="ActionScriptDefault_Text">atan2</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">yVelocity</span>,<span class="ActionScriptDefault_Text">xVelocity</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">*</span> 180 <span class="ActionScriptOperator">/</span> <span class="ActionScriptDefault_Text">Math</span>.<span class="ActionScriptDefault_Text">PI</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

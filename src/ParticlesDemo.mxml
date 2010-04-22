@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	minWidth="800" height="800" 
+	showFlexChrome="false" viewSourceURL="srcview/index.html">
+	
+	<mx:Script>
+		<![CDATA[
+		
+			import mx.core.UIComponent;
+		
+			import fi.punsa.particles.Ball;
+			import fi.punsa.particles.Particle;
+			import fi.punsa.util.Colorizer;
+			
+			private var numOfParticles:Number = 100;
+			private var gravity:Number = .22;
+			private var friction:Number = .98;
+			private var growth:Number = 1;
+			private var fade:Number = 1;
+			private var sizeVariation:Array = [1,6];
+			private var xVelocityVariation:Array = [-7,14];
+			private var yVelocityVariation:Array = [-7,14];
+			private var zVelocityVariation:Array = [0,1];
+			
+			[Bindable] private var infoText:String = "";
+			
+			private var followsMouse:Boolean = false;
+			private var isColorized:Boolean = false;
+			private var isGravity:Boolean = true;
+			private var isFriction:Boolean = true;
+			private var isEllipse:Boolean = true;
+			
+			private var particlesArray:Array = [];
+			private var colorizer:Colorizer = new Colorizer();
+			
+			/**
+			 * Initialize the application: Full screen mode on, add event listeners and so on
+			 */
+			private function onCreationComplete():void {
+				
+				this.frameRate = 12;
+				
+				nativeWindow.x = 0;
+				nativeWindow.y = 0;
+				
+				/* Set initial width and height for the application --> Full screen */
+				nativeWindow.width = Capabilities.screenResolutionX;
+				nativeWindow.height = Capabilities.screenResolutionY;
+				
+				this.addEventListener(Event.ENTER_FRAME, updateView);
+				this.nativeWindow.addEventListener(Event.CLOSING,closeApplication);
+				
+				refreshView(null);
+				
+				controlButtons.visible = true;
+			}
+			
+			/**
+			 * Reset an individual Particle for example a Ball
+			 */
+			private function resetParticle(p_obj:Particle):void {
+				
+				isGravity ? p_obj.gravity = gravity : p_obj.gravity = 0;
+				isFriction ? p_obj.friction = friction : p_obj.friction = 1;
+				
+				p_obj.growX = growth;
+				p_obj.growY = growth;
+				p_obj.fade = fade;
+				p_obj.autoRotate = true;
+				
+				p_obj.scaleX = p_obj.scaleY = 1;
+				p_obj.alpha = 1;
+			
+				p_obj.xVelocity = Math.random() * xVelocityVariation[1] + xVelocityVariation[0];
+				p_obj.yVelocity = Math.random() * yVelocityVariation[1] + yVelocityVariation[0];
+				p_obj.zVelocity = Math.random() * zVelocityVariation[1] + zVelocityVariation[0];
+				
+				if (followsMouse) {
+					p_obj.x = this.mouseX;
+					p_obj.y = this.mouseY;
+					p_obj.z = 0;
+				} else {
+					p_obj.x = this.nativeWindow.width / 2;
+					p_obj.y = this.nativeWindow.height / 2;
+					p_obj.z = 0;
+				}
+			}
+			
+			/**
+			 * Refresh the view: remove all the particles created and start creating new ones immediately
+			 */
+			private function refreshView(event:Event):void {
+				
+				updateInfo();
+				
+				container_cvs.removeAllChildren();
+				particlesArray = [];
+
+				updateView(null);
+			}
+			
+			/**
+			 * Creates given number of Particles to the screen
+			 */
+			private function updateView(event:Event):void {
+			
+				if (particlesArray.length < numOfParticles) {
+				
+					var ball:Ball;
+					if (isColorized) {
+						ball = new Ball(sizeVariation[0],sizeVariation[1],colorizer.randomColor(),isEllipse);
+					} else {
+						ball = new Ball(sizeVariation[0],sizeVariation[1],colorizer.randomGrey(),isEllipse);
+					}
+					container_cvs.addChild(ball);
+					particlesArray.push(ball);
+					resetParticle(ball);
+				}
+				
+				for (var i:uint=0; i<particlesArray.length; i++) {
+				
+					particlesArray[i].update();
+					
+					if (particlesArray[i].x >= this.nativeWindow.width || particlesArray[i].x <= 0 ||
+						particlesArray[i].y >= this.nativeWindow.height || particlesArray[i].y <= 0) {
+						
+						resetParticle(particlesArray[i]);	
+					}
+				}
+			}
+			
+			private function updateInfo():void {
+			
+				followsMouse ? infoText="following mouse" : infoText="from center";
+				infoText += "\n";
+				isColorized ? infoText+="colorized" : infoText+="black 'n white";
+				infoText += "\n";
+				isGravity ? infoText+="gravitation" : infoText+="space";
+				infoText += "\n";
+				isFriction ? infoText+="slow down" : infoText+="no friction";
+				infoText += "\n";
+				isEllipse ? infoText+="elliptic experience" : infoText+="just balls";
+			}
+			
+			private function changeNumOfParticles():void {
+				
+				numOfParticles = particles_slider.value;
+				refreshView(null);
+			}
+			
+			/**
+			 * Application closing routine
+			 */
+			private function closeApplication(event:Event):void {
+				
+				/* Remove event listener, because otherwise is causing an error (#3200 --> nativeWindow.width) */
+				removeEventListener(Event.ENTER_FRAME,updateView);
+				/* Close the application */
+				NativeApplication.nativeApplication.exit();
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Style source="/assets/style/particles.css" />
+	
+	<mx:Dissolve id="fadeIn" alphaFrom="0" alphaTo="1" duration="2000" />
+	
+	<mx:Canvas 
+		id="container_cvs" 
+		width="100%" height="100%"
+		horizontalScrollPolicy="off" verticalScrollPolicy="off" 
+		creationComplete="onCreationComplete()">
+	</mx:Canvas>
+	
+	<mx:HBox x="30" y="30">
+	
+		<mx:VBox id="controlButtons" backgroundAlpha=".7" styleName="controlButtons" showEffect="fadeIn" visible="false" height="150">
+	
+			<mx:ApplicationControlBar backgroundAlpha="0">
+				<mx:Button label="interactive?" click="followsMouse=!followsMouse;refreshView(event);" buttonMode="true" useHandCursor="true" mouseChildren="false" />
+				<mx:Button label="colors?" click="isColorized=!isColorized;refreshView(event);" buttonMode="true" useHandCursor="true" mouseChildren="false" />
+				<mx:Button label="gravity?" click="isGravity=!isGravity;refreshView(event);" buttonMode="true" useHandCursor="true" mouseChildren="false" />
+				<mx:Button label="friction?" click="isFriction=!isFriction;refreshView(event);" buttonMode="true" useHandCursor="true" mouseChildren="false" />
+				<mx:Button label="balls?" click="isEllipse=!isEllipse;refreshView(event);" buttonMode="true" useHandCursor="true" mouseChildren="false" />
+			</mx:ApplicationControlBar>
+			
+			<mx:HBox width="100%" height="100%">
+				<mx:HSlider id="particles_slider" minimum="50" maximum="500" value="100" dataTipPlacement="top" tickColor="0x323232"
+		            snapInterval="50" tickInterval="50" labels="['less','more']" allowTrackClick="true" 
+		            liveDragging="true" change="changeNumOfParticles()" />
+		        <mx:VBox width="100%" height="100%" verticalAlign="bottom">
+		        	<mx:Text width="100%" text="{infoText}" textAlign="right" />
+		        </mx:VBox>  
+				
+			</mx:HBox>
+		
+		</mx:VBox>
+		
+		<mx:VBox paddingTop="11">
+			<mx:Button label="quit" click="closeApplication(event);" borderColor="#ffffff" fillColors="#000000,#000000,#000000,#000000" color="#ffffff" buttonMode="true" useHandCursor="true" mouseChildren="false" />
+		</mx:VBox>	
+
+	</mx:HBox>
+	
+</mx:WindowedApplication>

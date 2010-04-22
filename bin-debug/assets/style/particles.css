@@ -1,0 +1,47 @@
+WindowedApplication {
+	cornerRadius: 0;
+}
+
+ApplicationControlBar {
+	paddingTop: 0;
+	paddingRight: 0;
+	paddingBottom: 0;
+	paddingLeft: 0;
+	borderStyle: none;
+	borderThickness: 1;
+	borderColor: #333333;
+	backgroundColor: #000000;
+	backgroundAlpha: 0.95;
+	dropShadowEnabled: true;
+	themeColor: #ffffff;
+}
+
+Button {
+	fillAlphas: 1, 1, 1, 1;
+	fillColors: #ffffff, #ffffff, #ffffff, #ffffff;
+	color: #000000;
+	themeColor: #BB0017;
+	paddingTop: 2;
+	paddingRight: 4;
+	paddingBottom: 2;
+	paddingLeft: 4;
+	cornerRadius: 0;
+	textRollOverColor: #666666;
+}
+
+Text {
+	font-family: Courier;
+	color: #ffffff;
+}
+
+.controlButtons {
+	paddingTop: 10;
+	paddingRight: 10;
+	paddingBottom: 10;
+	paddingLeft: 10;
+	borderStyle: solid;
+	borderThickness: 1;
+	borderColor: #333333;
+	backgroundColor: #000000;
+	color: #eeeeee;
+}

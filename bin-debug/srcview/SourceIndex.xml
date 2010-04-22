@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of ParticlesDemo</title>
+	<nodes>
+		<node label="libs">
+		</node>
+		<node icon="classpathIcon" label="src" expanded="true">
+			<node label="assets">
+				<node label="style">
+					<node icon="cssIcon" label="particles.css" url="source/assets/style/particles.css.html"/>
+				</node>
+			</node>
+			<node icon="packageIcon" label="fi.punsa.particles" expanded="true">
+				<node icon="actionScriptIcon" label="Ball.as" url="source/fi/punsa/particles/Ball.as.html"/>
+				<node icon="actionScriptIcon" label="Particle.as" url="source/fi/punsa/particles/Particle.as.html"/>
+			</node>
+			<node icon="packageIcon" label="fi.punsa.util" expanded="true">
+				<node icon="actionScriptIcon" label="Colorizer.as" url="source/fi/punsa/util/Colorizer.as.html"/>
+			</node>
+			<node label="ParticlesDemo-app.xml" url="source/ParticlesDemo-app.xml.txt"/>
+			<node icon="mxmlAppIcon" selected="true" label="ParticlesDemo.mxml" url="source/ParticlesDemo.mxml.html"/>
+		</node>
+		<node label="certificate.p12" url="source/certificate.p12"/>
+	</nodes>
+</index>
